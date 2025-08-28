@@ -16,6 +16,11 @@
         div {
             border: 1px solid blue;
         }
+
+        .flipped {
+            background-color: black;
+            pointer-events: none;
+        }
     </style>
 </head>
 
@@ -33,26 +38,27 @@
         let prevnumber = "0"
         let winCondition = 0;
         let tempNumber;
+        let wrongCard;
 
         start()
         function start() {
             app.innerHTML = /*HTML*/ `
-                <div class="cat" onclick="showImage('cat',this, 1)">1</div>
-                <div class="eagle" onclick="showImage('eagle',this, 1)">2</div>
-                <div class="horse" onclick="showImage('horse',this, 1)">3</div>
+                <div class="cat"     onclick="showImage('cat',this, 1)">1</div>
+                <div class="eagle"   onclick="showImage('eagle',this, 1)">2</div>
+                <div class="horse"   onclick="showImage('horse',this, 1)">3</div>
                 <div class="seagull" onclick="showImage('seagull',this, 1)">4</div>
-                <div class="cat" onclick="showImage('cat',this, 2)">5</div>
+                <div class="cat"     onclick="showImage('cat',this, 2)">5</div>
                 <div class="seagull" onclick="showImage('seagull',this, 2)">6</div>
-                <div class="dog" onclick="showImage('dog',this, 1)">7</div>
-                <div class="eagle" onclick="showImage('eagle',this, 2)">8</div>
-                <div class="shark" onclick="showImage('shark',this, 1)">9</div>
-                <div class="dog" onclick="showImage('dog',this, 2)">10</div>
-                <div class="zebra" onclick="showImage('zebra',this, 1)">11</div>
-                <div class="shark" onclick="showImage('shark',this, 2)">12</div>
-                <div class="horse" onclick="showImage('horse',this, 2)">13</div>
-                <div class="whale" onclick="showImage('whale',this, 1)">14</div>
-                <div class="whale" onclick="showImage('whale',this, 2)">15</div>
-                <div class="zebra" onclick="showImage('zebra',this, 2)">16</div>`
+                <div class="dog"     onclick="showImage('dog',this, 1)">7</div>
+                <div class="eagle"   onclick="showImage('eagle',this, 2)">8</div>
+                <div class="shark"   onclick="showImage('shark',this, 1)">9</div>
+                <div class="dog"     onclick="showImage('dog',this, 2)">10</div>
+                <div class="zebra"   onclick="showImage('zebra',this, 1)">11</div>
+                <div class="shark"   onclick="showImage('shark',this, 2)">12</div>
+                <div class="horse"   onclick="showImage('horse',this, 2)">13</div>
+                <div class="whale"   onclick="showImage('whale',this, 1)">14</div>
+                <div class="whale"   onclick="showImage('whale',this, 2)">15</div>
+                <div class="zebra"   onclick="showImage('zebra',this, 2)">16</div>`
         }
 
         function showImage(item, theDiv, number) {
@@ -60,48 +66,23 @@
             if (counter == 0) {
                 tempNumber = number
                 if (prevObject) {
-                    prevObject.innerHTML = prevnumber
+                    prevObject.innerHTML = "opened";
+                    console.log(prevObject);
                 }
                 storedItem = item
                 prevObject = theDiv
                 prevnumber = theDiv.innerHTML
-                if (item == "dog") {
-                    console.log("Hei")
-                    theDiv.innerHTML = `
-                        <img src="dog.png" width="100" height="100"/>`;
-                } else if (item == "cat") {
-                    theDiv.innerHTML = `
-                        <img src="cat.png" width="100" height="100"/>`;
-                } else if (item == "eagle") {
-                    theDiv.innerHTML = `
-                        <img src="eagle.png" width="100" height="100"/>`;
-                }
-                else if (item == "horse") {
-                    theDiv.innerHTML = `
-                        <img src="horse.png" width="100" height="100"/>`;
-                }
-                else if (item == "whale") {
-                    theDiv.innerHTML = `
-                        <img src="whale.png" width="100" height="100"/>`;
-                } else if (item == "zebra") {
-                    theDiv.innerHTML = `
-                        <img src="zebra.png" width="100" height="100"/>`;
-                } else if (item == "seagull") {
-                    theDiv.innerHTML = `
-                        <img src="seagull.png" width="100" height="100"/>`;
-                } else if (item == "shark") {
-                    theDiv.innerHTML = `
-                        <img src="shark.png" width="100" height="100"/>`;
-                }
+                theDiv.innerHTML = `<img src="${item}.png" width="100" height="100"/>`;
             }
             else if (counter == 1) {
                 newItem = item
                 if (number == tempNumber && storedItem == newItem) {
                     return
                 } else if (storedItem == newItem) {
+                    theDiv.onclick = null;
+                    prevObject.onclick = null;
                     theDiv.style.backgroundColor = "black";
                     prevObject.style.backgroundColor = "black";
-                    prevObject.innerHTML = prevnumber
                     counter = -1
                     winCondition++;
                     console.log(winCondition)
@@ -112,18 +93,13 @@
                 }
 
                 else {
-                    //  if(item=="dog"){
-                    //      console.log("Hei")
-                    //      theDiv.innerHTML=`
-                    //      <img src="dog.png" width="42" height="42"/>`;
-                    //  }
-                    prevObject.innerHTML = prevnumber
+                    theDiv.innerHTML = `<img src="${item}.png" width="100" height="100"/>`;
+                    prevObject.innerHTML = "opened";
+                    prevObject = theDiv;
                     storedItem = ""
                     counter = -1
+                    wrongCard = true;
                 }
-            }
-            else {
-                counter = -1
             }
             console.log(counter)
 
